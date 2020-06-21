@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel= "stylesheet" type= "text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <h1>NẾU CÓ LỖI, LÀ LỖI CỦA TÔI.</h1>
+    <h3><a href="https://www.facebook.com/hotuhi12">Chat Bot</a> using Flask.</h3>
+    <div>
+      <div id="chatbox">
+        <p class="botText"><span>Hi! I'm Chatterbot.  </span></p>
+        <p class="botText"><span>dich + quốc gia để biết về quốc gia (VD : dich Vietnam)  </span></p>
+        <p class="botText"><span>Nhiệt độ hiện tại của 1 tỉnh : temp + số (VD : temp Nghệ An) </span></p>
+        <p class="botText"><span>Fact về một con số : num + số (VD : num 247) </span></p>
+      </div>
+      <div id="userInput">
+        <input id="textInput" type="text" name="msg" placeholder="Message">
+        <input id="buttonInput" type="submit" value="Send">
+      </div>
+      <script>
+        function getBotResponse() {
+          var rawText = $("#textInput").val();
+          var userHtml = '<p class="userText"><span>' + rawText + '</span></p>';
+          $("#textInput").val("");
+          $("#chatbox").append(userHtml);
+          document.getElementById('userInput').scrollIntoView({block: 'start', behavior: 'smooth'});
+          $.get("/get", { msg: rawText }).done(function(data) {
+            var botHtml = '<p class="botText"><span>' + data + '</span></p>';
+            $("#chatbox").append(botHtml);
+            document.getElementById('userInput').scrollIntoView({block: 'start', behavior: 'smooth'});
+          });
+        }
+        $("#textInput").keypress(function(e) {
+            if(e.which == 13) {
+                getBotResponse();
+            }
+        });
+        $("#buttonInput").click(function() {
+          getBotResponse();
+        })
+      </script>
+      <!-- <h2> <p>sau tất cả, tôi cần một cái ôm, chứ không phải những lời trách móc </p> </h2> -->
+    </div>
+  </body>
+</html>
+<!-- <br> dich + quốc gia để biết về quốc gia (VD : dich Vietnam) <br> Nhiệt độ hiện tại của 1 tỉnh : temp + số (VD : temp Nghệ An)   <br> Fact về một con số : num + số (VD : num 247) -->
